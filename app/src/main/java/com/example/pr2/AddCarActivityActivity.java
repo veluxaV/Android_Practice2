@@ -1,47 +1,40 @@
 package com.example.pr2;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.EditText;
 
-public class MainActivity extends AppCompatActivity {
+public class AddCarActivityActivity extends AppCompatActivity {
 
     private final static String TAG = "MainActivity";
-    private Button add_car;
-    private TextView add_car_text;
-    private ImageView icon;
-
-    static final String NAME = "NAME";
-    static final String BRAND="BRAND";
-
-
+    private Button go_back;
+    private EditText car_name;
+    private EditText car_brandname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        add_car_text = findViewById(R.id.add_car_text);
-        add_car = findViewById(R.id.add_car_button);
-        icon = findViewById(R.id.Car);
+        setContentView(R.layout.add_car_activity);
+        go_back = findViewById(R.id.GoBackButton);
 
-        icon.setImageResource(R.drawable.car);
-        add_car_text.setText(R.string.car_is_not_added);
+        car_name = findViewById(R.id.name_edit_text);
+        car_brandname = findViewById(R.id.brand_edit_text);
 
     }
+
     public void ButtonClicked(View view){
-        Log.d(TAG, "Нажата кнопка Добавить автомобиль");
-        Intent intent = new Intent(this, AddCarActivityActivity.class);
-        startActivity(intent);
+        Log.d(TAG, "Нажата кнопка Назад на главный экран");
+        Intent intent = new Intent();
+        String name = car_name.getText().toString();
+        String brand = car_brandname.getText().toString();
+        intent.putExtra(MainActivity.NAME, name);
+        intent.putExtra(MainActivity.BRAND, brand);
+        setResult(RESULT_OK, intent);
+        finish();
     }
     @Override
     protected void onStart() {
