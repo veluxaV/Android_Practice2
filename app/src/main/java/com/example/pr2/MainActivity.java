@@ -24,7 +24,23 @@ public class MainActivity extends AppCompatActivity {
 
     static final String NAME = "NAME";
     static final String BRAND="BRAND";
+    ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
 
+                    //TextView textView = findViewById(R.id.textView);
+                    if(result.getResultCode() == Activity.RESULT_OK){
+                        Intent intent = result.getData();
+                        String name = intent.getStringExtra(NAME);
+                        String brand = intent.getStringExtra(BRAND);
+                        add_car_text.setText("Ваша машина: " + name + " " + brand);
+                    }
+                    else{
+                        add_car_text.setText("Ошибка");
+                    }
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     public void ButtonClicked(View view){
         Log.d(TAG, "Нажата кнопка Добавить автомобиль");
         Intent intent = new Intent(this, AddCarActivityActivity.class);
-        startActivity(intent);
+        mStartForResult.launch(intent);
     }
     @Override
     protected void onStart() {
